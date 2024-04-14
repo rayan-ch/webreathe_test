@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des modules{% endblock %}
+
+{% block body %}
+
+<div class="card-body bg-light">
+    <table class="table table-striped" style="width:100%" id="dataTable">
+        <thead>
+            <tr>
+                <th scope="col"><center>Nom</center></th>
+                <th scope="col"><center>Numero de série</center></th>
+                <th scope="col"><center>Type</center></th>
+                <th scope="col"><center>Etat</center></th>
+                <th scope="col"><center>Mesure actuelle</center></th>
+                <th scope="col"><center>Durée de fonctionnement</center></th>
+                <th scope="col"><center>Nombre de données envoyées</center></th>
+                <th scope="col"><center>Graph</center></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for module in modules %}
+                {% set startAt = module.startAt %}
+                {% set now = "now" %}
+                {% set diffInSeconds = (now|date("U") - startAt|date("U")) %}
+                {% set days = (diffInSeconds / 86400)|round(0, 'floor') %}
+                {% set hours = ((diffInSeconds % 86400) / 3600)|round(0, 'floor') %}
+                {% set minutes = ((diffInSeconds % 3600) / 60)|round(0, 'floor') %}
+                {% set seconds = (diffInSeconds % 60)|round(0, 'floor') %}
+                {% set keys = module.donnees.donnees|keys %}
+                {% set nb_donnees = module.donnees.donnees|length %}
+                <tr>
+                    <td><center>{{module.nom}}</center></td>
+                    <td><center>{{module.numeroSerie}}</center></td>
+                    <td><center>{{module.typeModule.nom}}</center></td>
+                    
+                    {% if module.etat == "fonctionnel" %}
+                        <td><center><i style='text-decoration:none; color:green; font-size:20px' class='fas fa-smile'></i></center></td>
+                    {% elseif module.etat == "maintenance" %}
+                        <td><center><i style='text-decoration:none; color:orange; font-size:20px' class='fas fa-meh'></i></center></td>
+                    {% else %}
+                        <td><center><i style='text-decoration:none; color:red; font-size:20px' class='fas fa-meh'></i></center></td>
+                    {% endif %}
+                    <td><center>{{module.donnees.donnees[keys[nb_donnees - 1]]}}{{module.typeModule.unite}}</center></td>
+
+                    {% if module.etat == "fonctionnel" %}
+                        <td><center>{{ days }} jours, {{ hours }} heures, {{ minutes }} minutes et {{ seconds }} secondes</center></td>
+                    {% else %}
+                        <td><center>-</center></td>
+                    {% endif %}
+                    <td><center>{{nb_donnees}}</center></td>
+                    <td><center><a href="{{ path('Module', {'id':module.id}) }}"><i style="font-size:25px; color:green;" class='bx bx-stats'></i><a/></center></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

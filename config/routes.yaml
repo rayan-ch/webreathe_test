@@ -1,0 +1,8 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+api_module:
+    path: /api/modules/{id}
+    controller: App\Controller\APIController::index
+    methods: GET
