@@ -1,0 +1,190 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des modules
+{% endblock %}
+
+{% block body %}
+
+	<div class="card-body bg-light mb-3">
+		<table class="table table-striped" style="width:100%" id="dataTable">
+			<thead>
+				<tr>
+					<th scope="col">
+						<center>Nom</center>
+					</th>
+					<th scope="col">
+						<center>Numero de série</center>
+					</th>
+					<th scope="col">
+						<center>Type</center>
+					</th>
+					<th scope="col">
+						<center>Etat</center>
+					</th>
+					<th scope="col">
+						<center>Mesure actuelle</center>
+					</th>
+					<th scope="col">
+						<center>Durée de fonctionnement</center>
+					</th>
+					<th scope="col">
+						<center>Nombre de données envoyées</center>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set startAt = module.startAt %}
+				{% set now = "now" %}
+				{% set diffInSeconds = (now|date("U") - startAt|date("U")) %}
+				{% set days = (diffInSeconds / 86400)|round(0, 'floor') %}
+				{% set hours = ((diffInSeconds % 86400) / 3600)|round(0, 'floor') %}
+				{% set minutes = ((diffInSeconds % 3600) / 60)|round(0, 'floor') %}
+				{% set seconds = (diffInSeconds % 60)|round(0, 'floor') %}
+				{% set keys = module.donnees|keys %}
+				{% set nb_donnees = module.donnees|length %}
+
+				<tr>
+					<td>
+						<center>{{module.nom}}</center>
+					</td>
+					<td>
+						<center>{{module.numeroSerie}}</center>
+					</td>
+					<td>
+						<center>{{module.typeModule.nom}}</center>
+					</td>
+
+					{% if module.etat == "Fonctionnel" %}
+						<td>
+							<center>
+								<i style='text-decoration:none; color:green; font-size:20px' class='fas fa-smile'></i>
+							</center>
+						</td>
+					{% elseif module.etat == "En maintenance" %}
+						<td>
+							<center>
+								<i style='text-decoration:none; color:orange; font-size:20px' class='fas fa-meh'></i>
+							</center>
+						</td>
+					{% else %}
+						<td>
+							<center>
+								<i style='text-decoration:none; color:red; font-size:20px' class='fas fa-meh'></i>
+							</center>
+						</td>
+					{% endif %}
+
+					{% if nb_donnees > 0 %}
+						<td>
+							<center>{{module.donnees[nb_donnees -1][1]}}{{module.typeModule.unite}}</center>
+						</td>
+					{% else %}
+						<td>
+							<center>-</center>
+						</td>
+					{% endif %}
+
+					{% if module.etat == "Fonctionnel" %}
+						<td>
+							<center>{{ days }}
+								jours,
+								{{ hours }}
+								heures,
+								{{ minutes }}
+								minutes et
+								{{ seconds }}
+								secondes</center>
+						</td>
+					{% else %}
+						<td>
+							<center>-</center>
+						</td>
+					{% endif %}
+					<td>
+						<center>{{nb_donnees}}</center>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{module.typeModule.nom}}</h6>
+            </div>
+            <div class="chart-area">
+                <canvas id="myAreaChart">
+                    <script>
+                        const LIMIT_DATA_IN_CHART = 20; // Limiter l'affichage du graphique aux 20 dernières données
+                        function update_graph() {
+                            let x = [];
+                            let y = [];
+
+                            $.ajax({
+                                url: 'http://localhost:8000/api/modules/{{ module.id }}',
+                                method: 'GET',
+                                success: function(response) {
+                                    let donnees = response.historique
+                                    let date = null
+                                    let start_index = 0;
+                                    if (donnees.length > LIMIT_DATA_IN_CHART) {
+                                        start_index = donnees.length - LIMIT_DATA_IN_CHART;
+                                    }
+                                    for (let i = start_index; i < donnees.length; i++) {
+                                        let data = donnees[i];
+                                        let time = data[0]
+                                        let [datePart, timePart] = time.split(' ');
+                                        date = datePart
+                                        x.push(timePart);
+                                        y.push(data[1]);
+                                    }
+
+                                    // Créez le graphique une fois que les données ont été récupérées avec succès
+                                    let ctx = document.getElementById("myAreaChart");
+                                    let myHourlyChart = new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: x,
+                                            datasets: [{
+                                                label: '{{ module.typeModule.grandeurPhysique }} ',
+                                                data: y,
+                                                borderColor: 'rgba(78, 115, 223, 1)',
+                                                backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                                                borderWidth: 2
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                yAxes: [{
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: '{{ module.typeModule.grandeurPhysique }} ({{ module.typeModule.unite }})'
+                                                    }
+                                                }],
+                                                xAxes: [{
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: date
+                                                    }
+                                                }]
+                                            }
+                                        }
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                }
+                            });
+                        }
+                        update_graph()
+                        //setInterval(update_graph, 1000);
+                    </script>
+                </canvas>
+            </div>
+            <hr>
+            <span>Description : {{module.description}}</span>
+        </div>
+    </div>
+{% endblock %}

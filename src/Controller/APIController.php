@@ -27,7 +27,7 @@ class APIController extends AbstractController
         $modules = $entityManager->getRepository(Modules::class)->findAll();
         $nb_panne = 0;
         foreach ($modules as $key => $module) {
-            if ($module->getEtat() != "fonctionnel") {
+            if ($module->getEtat() != "Fonctionnel") {
                 $nb_panne++;
             }
         }

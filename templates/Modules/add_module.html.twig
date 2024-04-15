@@ -11,7 +11,7 @@
                 <h3 class="text-center text-black my-2">Ajouter un module</h3>
             </div>
             <div class="card-body">
-                <form action="" method="POST" class="form">
+                <form action="{{path('EnregistrerModule')}}" method="POST" class="form">
                    <div class="row mb-3">
                         <div class="col-md-6">
                             <div class="form-floating">
@@ -38,9 +38,9 @@
                             <div class="form-floating">
                                 <select class="form-control" id="etat_initial" name="etat_initial" required="required">
                                     <option value="">État initial</option>
-                                    <option value="1">Opérationnel</option>
-                                    <option value="2">En panne</option>
-                                    <option value="1">En maintenance</option>
+                                    <option value="Fonctionnel">Fonctionnel</option>
+                                    <option value="En panne">En panne</option>
+                                    <option value="En maintenance">En maintenance</option>
                                 </select>
                             </div>
                         </div>
@@ -51,8 +51,9 @@
                             <div class="form-floating ">
                                 <select class="form-control" id="type_module" name="type_module" required="required">
                                     <option value="">Sélectionnez le type de module</option>
-                                    <option value="1">Capteur de Température</option>
-                                    <option value="2">Capteur de Vitesse</option>
+                                    {% for type in type_modules %}
+                                        <option value="{{type.id}}">{{type.nom}}</option>
+                                    {% endfor %}
                                     <option value="autre">Autre</option>
                                 </select>
                             </div>
@@ -60,7 +61,7 @@
                 
                         <div class="col-md-6" id="autre_type_module_container" style="display: none;">
                             <div class="form-floating ">
-                                <a href="AjouterTypeModule" class="btn btn-success btn-block"><th>Ajouter un nouveau type de module</th></a>
+                                <a href="{{ path('AjouterTypeModule') }}" class="btn btn-success btn-block"><th>Ajouter un nouveau type de module</th></a>
                             </div>
                         </div>
                     </div>

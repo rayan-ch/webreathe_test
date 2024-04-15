@@ -11,7 +11,7 @@
                 <h3 class="text-center text-black my-2">Ajouter un type de module</h3>
             </div>
             <div class="card-body">
-                <form action="" method="POST" class="form">
+                <form action="{{path('EnregistrerTypeModule')}}" method="POST" class="form">
                     <div class="mt-4 mb-3">
                         <div class="d-grid">
                             <div class="form-floating">
@@ -38,6 +38,11 @@
 
                     <div class="mt-4 mb-0">
                         <div class="d-grid">
+
+                            {% if error is defined %}
+                                <p class="text-danger">{{error}}</p>
+                            {% endif %}
+                        
                             <th><input class="btn btn-success btn-block" type='submit' value='Ajouter'></th>
                         </div>
                     </div>

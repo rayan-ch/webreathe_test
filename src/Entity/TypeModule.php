@@ -24,12 +24,12 @@ class TypeModule
     #[ORM\Column(length: 10)]
     private ?string $unite = null;
 
-    #[ORM\OneToMany(targetEntity: modules::class, mappedBy: 'typeModule')]
-    private Collection $modules;
+    #[ORM\OneToMany(targetEntity: Modules::class, mappedBy: 'typeModule')]
+    private Collection $Modules;
 
     public function __construct()
     {
-        $this->modules = new ArrayCollection();
+        $this->Modules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,26 +74,26 @@ class TypeModule
     }
 
     /**
-     * @return Collection<int, modules>
+     * @return Collection<int, Modules>
      */
     public function getModules(): Collection
     {
-        return $this->modules;
+        return $this->Modules;
     }
 
-    public function addModule(modules $module): static
+    public function addModule(Modules $module): static
     {
-        if (!$this->modules->contains($module)) {
-            $this->modules->add($module);
+        if (!$this->Modules->contains($module)) {
+            $this->Modules->add($module);
             $module->setTypeModule($this);
         }
 
         return $this;
     }
 
-    public function removeModule(modules $module): static
+    public function removeModule(Modules $module): static
     {
-        if ($this->modules->removeElement($module)) {
+        if ($this->Modules->removeElement($module)) {
             // set the owning side to null (unless already changed)
             if ($module->getTypeModule() === $this) {
                 $module->setTypeModule(null);

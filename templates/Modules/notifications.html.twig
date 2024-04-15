@@ -10,20 +10,32 @@
 			<thead>
 				<tr>
 					<th scope="col">
-						<center>Alerts</center>
+						<center>Alertes</center>
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% for module in modules %}
-					{% if module.etat != "fonctionnel" %}
-						<tr>
-							<td>
-								<center>{{module.nom}}</center>
-							</td>
-						</tr>
-					{% endif %}
-				{% endfor %}
+				{% if nb_alerts > 0 %}
+					{% for module in modules %}
+						{% if module.etat != "Fonctionnel" %}
+							<tr>
+								<td>
+									{% if module.etat == "En panne" %}
+										<center>Le module : <a href="{{path('Detail', {'id':module.id})}}"> {{module.nom}} ({{module.NumeroSerie}})</a>  est en panne <i style="color:red;" class="fas fa-exclamation"></i></center>
+									{% elseif module.etat == "En maintenance" %}
+										<center>Le module : <a href="{{path('Detail', {'id':module.id})}}"> {{module.nom}} ({{module.NumeroSerie}})</a>  est en maintenance <i style="color:orange;" class="fas fa-hammer"></i></center>
+									{% endif %}
+								</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td>
+							<center>Pas d'alertes</center>
+						</td>
+					</tr>
+				{% endif %}
 			</tbody>
 		</table>
 

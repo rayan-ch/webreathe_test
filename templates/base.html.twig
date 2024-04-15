@@ -7,7 +7,7 @@
         
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
@@ -37,15 +37,20 @@
                 </div>
 
                 <nav id="navbar" class="nav-menu navbar">
-                    <ul id="navbard-d" style="display: none;">
+                    <ul>
                         <li><a href="{{ path('Accueil') }}" class="nav-link scrollto"><i class="bx bx-home"></i> <span>Home</span></a></li>
                         <li><a href="{{ path('Modules') }}" class="nav-link scrollto"><i class="bx bx-chip"></i> <span>Liste des modules</span></a></li>
                         <li><a href="{{ path('AjouterModule') }}" class="nav-link scrollto"><i class='bx bx-plus-circle'></i> <span>Ajouter un module</span></a></li>
                         <li>
                             <a href="{{ path('Notifications') }}" class="nav-link scrollto">
                                 <i class='bx bx-bell'></i>
-                                <div class="notification"></div>
-                                <span>Alerts</span>
+                                
+                                <div class="notification">
+                                    {% if nb_alerts > 0 %}
+                                        <span class="notification-count">{{nb_alerts}}</span>
+                                    {% endif %}
+                                </div>
+                                <span>Alertes</span>
                             </a>
                         </li>                    
                     </ul>
