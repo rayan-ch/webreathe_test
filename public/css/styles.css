@@ -1,7 +1,7 @@
 body {
     font-family: "Open Sans", sans-serif;
     color: #272829;
-    background-image: url("../img/background.jpg");
+    background-image: url("https://cdn.discordapp.com/attachments/1214288894171029504/1229353119935365191/background.jpg?ex=662f5f50&is=661cea50&hm=c358cc79ca9b992612349bc96b22aaf35f644c74b9eafbfc9d9157c6fa917c63&");
     min-height: 100vh;
     background-size: cover;
 }
@@ -146,7 +146,7 @@ body {
 
 
 
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 1376px) {
 
     td,
     tr {
