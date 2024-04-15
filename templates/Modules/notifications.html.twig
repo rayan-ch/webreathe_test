@@ -10,18 +10,20 @@
 			<thead>
 				<tr>
 					<th scope="col">
-						<center>Notifications</center>
+						<center>Alerts</center>
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-
-				<tr>
-					<td>
-						<center>test</center>
-					</td>
-				</tr>
-
+				{% for module in modules %}
+					{% if module.etat != "fonctionnel" %}
+						<tr>
+							<td>
+								<center>{{module.nom}}</center>
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
 			</tbody>
 		</table>
 

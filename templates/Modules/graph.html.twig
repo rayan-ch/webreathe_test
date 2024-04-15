@@ -14,65 +14,68 @@
 			<canvas id="myAreaChart">
 				<script>
 					const LIMIT_DATA_IN_CHART = 20; // Limiter l'affichage du graphique aux 20 dernières données
-					let x = [];
-					let y = [];
+					function update_graph() {
+						let x = [];
+						let y = [];
 
-					$.ajax({
-						url: 'http://localhost:8000/api/modules/{{ id }}',
-						method: 'GET',
-						success: function(response) {
-							let keys = Object.keys(response.historique.donnees);
-							let date = null
-							let start_index = 0;
-							if (keys.length > LIMIT_DATA_IN_CHART) {
-								start_index = keys.length - LIMIT_DATA_IN_CHART;
-							}
-							for (let i = start_index; i < keys.length; i++) {
-								let time = keys[i];
-								let [datePart, timePart] = time.split(' ');
-								date = datePart
-								x.push(timePart);
-								y.push(response.historique.donnees[time]);
-							}
-							console.log(x);
-
-							// Créez le graphique une fois que les données ont été récupérées avec succès
-							let ctx = document.getElementById("myAreaChart");
-							let myHourlyChart = new Chart(ctx, {
-								type: 'line',
-								data: {
-									labels: x,
-									datasets: [{
-										label: '{{ type.grandeurPhysique }} ',
-										data: y,
-										borderColor: 'rgba(78, 115, 223, 1)',
-										backgroundColor: 'rgba(78, 115, 223, 0.1)',
-										borderWidth: 2
-									}]
-								},
-								options: {
-									scales: {
-										yAxes: [{
-											scaleLabel: {
-												display: true,
-												labelString: '{{ type.grandeurPhysique }} ({{ type.unite }})'
-											}
-										}],
-										xAxes: [{
-											scaleLabel: {
-												display: true,
-												labelString: date
-											}
-										}]
-									}
+						$.ajax({
+							url: 'http://localhost:8000/api/modules/{{ id }}',
+							method: 'GET',
+							success: function(response) {
+								let keys = Object.keys(response.historique.donnees);
+								let date = null
+								let start_index = 0;
+								if (keys.length > LIMIT_DATA_IN_CHART) {
+									start_index = keys.length - LIMIT_DATA_IN_CHART;
 								}
-							});
-						},
-						error: function(xhr, status, error) {
-							console.error(error);
-						}
-					});
+								for (let i = start_index; i < keys.length; i++) {
+									let time = keys[i];
+									let [datePart, timePart] = time.split(' ');
+									date = datePart
+									x.push(timePart);
+									y.push(response.historique.donnees[time]);
+								}
+								console.log(x);
 
+								// Créez le graphique une fois que les données ont été récupérées avec succès
+								let ctx = document.getElementById("myAreaChart");
+								let myHourlyChart = new Chart(ctx, {
+									type: 'line',
+									data: {
+										labels: x,
+										datasets: [{
+											label: '{{ type.grandeurPhysique }} ',
+											data: y,
+											borderColor: 'rgba(78, 115, 223, 1)',
+											backgroundColor: 'rgba(78, 115, 223, 0.1)',
+											borderWidth: 2
+										}]
+									},
+									options: {
+										scales: {
+											yAxes: [{
+												scaleLabel: {
+													display: true,
+													labelString: '{{ type.grandeurPhysique }} ({{ type.unite }})'
+												}
+											}],
+											xAxes: [{
+												scaleLabel: {
+													display: true,
+													labelString: date
+												}
+											}]
+										}
+									}
+								});
+							},
+							error: function(xhr, status, error) {
+								console.error(error);
+							}
+						});
+					}
+					update_graph()
+					//setInterval(update_graph, 1000);
 				</script>
 			</canvas>
 		</div>

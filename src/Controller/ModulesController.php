@@ -53,8 +53,15 @@ class ModulesController extends AbstractController
     #[Route('/notifications', name: 'Notifications')]
     public function notifications(EntityManagerInterface $entityManager): Response
     {
+        $modules = $entityManager->getRepository(Modules::class)->findAll();
+        $nb_alerts = 0;
+        foreach ($module as $key => $modules) {
+            if ($module->getEtat() != "fonctionnel") {
+                $nb_alerts++;
+            }
+        }
         return $this->render('Modules/notifications.html.twig', [
-            'controller_name' => 'Modules Controller',
+            'modules' => $modules,
         ]);
     }
 }

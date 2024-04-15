@@ -14,6 +14,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ asset('js/chart.js/Chart.min.js') }}"></script>
+        <script src="{{ asset('js/simpleTable.js') }}" crossorigin="anonymous"></script>
         <script src="{{ asset('js/main.js') }}"></script>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
@@ -36,7 +37,7 @@
                 </div>
 
                 <nav id="navbar" class="nav-menu navbar">
-                    <ul>
+                    <ul id="navbard-d" style="display: none;">
                         <li><a href="{{ path('Accueil') }}" class="nav-link scrollto"><i class="bx bx-home"></i> <span>Home</span></a></li>
                         <li><a href="{{ path('Modules') }}" class="nav-link scrollto"><i class="bx bx-chip"></i> <span>Liste des modules</span></a></li>
                         <li><a href="{{ path('AjouterModule') }}" class="nav-link scrollto"><i class='bx bx-plus-circle'></i> <span>Ajouter un module</span></a></li>
@@ -44,7 +45,7 @@
                             <a href="{{ path('Notifications') }}" class="nav-link scrollto">
                                 <i class='bx bx-bell'></i>
                                 <div class="notification"></div>
-                                <span>Notification</span>
+                                <span>Alerts</span>
                             </a>
                         </li>                    
                     </ul>
@@ -58,10 +59,7 @@
         </main>
 
         <script language="javascript" type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
-        <script language="javascript" type="text/javascript" src="https://code.highcharts.com/modules/exporting.js">/script>
-
-        <script src="js/simpleTable.js" crossorigin="anonymous"></script>
-
+        <script language="javascript" type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
 
     </body>
 </html>

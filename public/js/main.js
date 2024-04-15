@@ -27,21 +27,27 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  $.ajax({
-    url: 'http://localhost:8000/api/modules/panne',
-    method: 'GET',
-    success: function(response) {
-        let notif_elmnt = document.querySelector(".notification")
-        if (response.nb_panne > 0) {
-            notif_elmnt.innerHTML = '<span class="notification-count">'+response.nb_panne+'</span>'
-        } else {
-            notif_elmnt.innerHTML = ""
-        }
-    },
-    error: function(xhr, status, error) {
-        console.error(error);
-    }
-  });
+  function update_alerts() {
+    $.ajax({
+      url: 'http://localhost:8000/api/modules/panne',
+      method: 'GET',
+      success: function(response) {
+          let navbar = document.getElementById('navbard-d') 
+          let notif_elmnt = document.querySelector(".notification")
+          if (response.nb_panne > 0) {
+              notif_elmnt.innerHTML = '<span class="notification-count">'+response.nb_panne+'</span>'
+          } else {
+              notif_elmnt.innerHTML = ""
+          }
+          navbar.style.display = "block"
+      },
+      error: function(xhr, status, error) {
+          console.error(error);
+      }
+    });
+  }
+  //update_alerts()
+  setInterval(update_alerts, 1000)
 });
 
 
