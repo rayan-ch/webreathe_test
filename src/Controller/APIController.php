@@ -35,4 +35,18 @@ class APIController extends AbstractController
 
         return $this->json($data);
     }
+
+    #[Route('/api/genererPannes', name: 'api', methods: ['POST'])]
+    public function generer_pannes(EntityManagerInterface $entityManager): JsonResponse
+    {
+     
+        return $this->json($data);
+    }
+
+    #[Route('/api/genererDonnees', name: 'api', methods: ['POST'])]
+    public function generer_donnees(EntityManagerInterface $entityManager): JsonResponse
+    {
+ 
+        return $this->json($data);
+    }
 }
