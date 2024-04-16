@@ -14,7 +14,7 @@
                 <th scope="col"><center>Etat</center></th>
                 <th scope="col"><center>Mesure actuelle</center></th>
                 <th scope="col"><center>Durée de fonctionnement</center></th>
-                <th scope="col"><center>Nombre de données envoyées</center></th>
+                <th scope="col"><center>Nombre de données reçu</center></th>
                 <th scope="col"><center>Graph</center></th>
             </tr>
         </thead>
@@ -43,8 +43,9 @@
                         <td><center><i style='text-decoration:none; color:red; font-size:20px' class='fas fa-meh'></i></center></td>
                     {% endif %}
 
-                    {% if nb_donnees > 0 %}
-                        <td><center>{{module.donnees[nb_donnees -1][1]}}{{module.typeModule.unite}}</center></td>
+					{% if nb_donnees > 0 and module.etat == "Fonctionnel" %}
+                        {% set date = module.donnees[nb_donnees -1]|keys %}
+                        <td><center>{{module.donnees[nb_donnees -1][date[0]]}}{{module.typeModule.unite}}</center></td>
                     {% else %}
                         <td><center>-</center></td>                        
                     {% endif %}
