@@ -115,7 +115,6 @@
             <div class="chart-area">
                 <canvas id="myAreaChart">
                     <script>
-                        const LIMIT_DATA_IN_CHART = 20; // Limiter l'affichage du graphique aux 20 dernières données
 						let nb_donnees = 0	// utiliser pour faire un update du graph en cas d'un recu d'une nouvelle donnée
                         function update_graph() {
                             let x = []
@@ -128,8 +127,8 @@
                                     let donnees = response.historique
                                     let date = null
                                     let start_index = 0;
-                                    if (donnees.length > LIMIT_DATA_IN_CHART) {
-                                        start_index = donnees.length - LIMIT_DATA_IN_CHART;
+                                    if (donnees.length > LIMIT_DATA_IN_GRAPH) {
+                                        start_index = donnees.length - LIMIT_DATA_IN_GRAPH;
                                     }
                                     for (let i = start_index; i < donnees.length; i++) {
                                         let data = donnees[i];
@@ -141,11 +140,10 @@
                                         y.push(data[time]);
                                     }
 
-									console.log(nb_donnees)
 									if (nb_donnees != donnees.length) {	// verifier si une nouvelle donnée a été recu
 										nb_donnees = donnees.length
 										let nb_donnees_elmt = document.getElementById("nb_donnees")
-										nb_donnees_elmt.textContent = nb_donnees	// mettre a jour le champ de "Nombre de données" dans le tableau
+										nb_donnees_elmt.innerHTML = "<center>{{nb_donnees}}</center>" 	// mettre a jour le champ de "Nombre de données" dans le tableau
 
 										// Créez le graphique une fois que les données ont été récupérées avec succès
 										let ctx = document.getElementById("myAreaChart");
@@ -186,7 +184,6 @@
                             });
                         }
 						update_graph()
-                        setInterval(update_graph, 5000);
                     </script>
                 </canvas>
             </div>
