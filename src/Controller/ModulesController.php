@@ -100,7 +100,6 @@ class ModulesController extends AbstractController
         $request = $request->request;
         if ($request->count() > 0) {
             $typeModule = $entityManager->getRepository(TypeModule::class)->findByNom($request->get('nom'));
-            dump($typeModule);
 
             $type = new TypeModule();
             if (!$typeModule) {
