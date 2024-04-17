@@ -42,12 +42,12 @@
                         <li><a href="{{ path('Modules') }}" class="nav-link scrollto"><i class="bx bx-chip"></i> <span>Liste des modules</span></a></li>
                         <li><a href="{{ path('AjouterModule') }}" class="nav-link scrollto"><i class='bx bx-plus-circle'></i> <span>Ajouter un module</span></a></li>
                         <li>
-                            <a href="{{ path('Notifications') }}" class="nav-link scrollto">
+                            <a href="{{ path('Alerts') }}" class="nav-link scrollto">
                                 <i class='bx bx-bell'></i>
                                 
-                                <div class="notification">
+                                <div class="alerts">
                                     {% if nb_alerts > 0 %}
-                                        <span class="notification-count">{{nb_alerts}}</span>
+                                        <span class="alerts-count">{{nb_alerts}}</span>
                                     {% endif %}
                                 </div>
                                 <span>Alertes</span>

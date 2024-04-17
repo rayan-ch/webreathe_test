@@ -1,7 +1,7 @@
 const DELAY_UPDATE_ALERTS = 5     // Verifier et mettre a jour le nombre d'alerts chaque x secondes
 const DELAY_UPDATE_GRAPH = 5      // Mettre a jour le graphique chaque x secondes
-const DELAY_UPDATE_ETAT = 30      // Le temps entre chaque mise a jour des états des modules en secondes
-const DELAY_INSERT_NEW_DATA = 30  // Le temps entre chaque nouvelle insertion de données
+const DELAY_UPDATE_ETAT = 10      // Le temps entre chaque mise a jour de l'état des modules en secondes
+const DELAY_INSERT_NEW_DATA = 10  // Le temps entre chaque nouvelle insertion de données
 
 const LIMIT_DATA_IN_GRAPH = 20  // Limiter l'affichage du graphique aux 20 dernières données
 
@@ -40,9 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
       url: 'http://localhost:8000/api/modules/panne',
       method: 'GET',
       success: function(response) {
-          let notif_elmnt = document.querySelector(".notification")
+          let notif_elmnt = document.querySelector(".alerts")
           if (response.nb_panne > 0) {
-              notif_elmnt.innerHTML = '<span class="notification-count">'+response.nb_panne+'</span>'
+              notif_elmnt.innerHTML = '<span class="alerts-count">'+response.nb_panne+'</span>'
           } else {
               notif_elmnt.innerHTML = ""
           }
@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   setInterval(update_alerts, DELAY_UPDATE_ALERTS * 1000)    // pour mettre a jour le nombre d'alerts chaque DELAY_UPDATE_ALERTS secondes
-  setInterval(update_graph, DELAY_UPDATE_GRAPH * 1000)      // Mettre a jour le graph si y'a une nouvelle donnée recu
   setInterval(generer_donnees, DELAY_INSERT_NEW_DATA * 1000)
   setInterval(update_etat, DELAY_UPDATE_ETAT * 1000)
 });

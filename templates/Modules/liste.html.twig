@@ -45,7 +45,7 @@
 
 					{% if nb_donnees > 0 and module.etat == "Fonctionnel" %}
                         {% set date = module.donnees[nb_donnees -1]|keys %}
-                        <td><center>{{module.donnees[nb_donnees -1][date[0]]}}{{module.typeModule.unite}}</center></td>
+                        <td><center>{{module.donnees[nb_donnees -1][date[0]]}} {{module.typeModule.unite}}</center></td>
                     {% else %}
                         <td><center>-</center></td>                        
                     {% endif %}

@@ -13,6 +13,7 @@ use App\Entity\TypeModule;
 
 class ModulesController extends AbstractController
 {
+    // methode responsable de l'affichage de la page d'accueil
     #[Route('/', name: 'Accueil')]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -21,7 +22,8 @@ class ModulesController extends AbstractController
         ]);
     }
 
-    #[Route("/modules/", name: 'Modules')]
+    // methode responsable de l'affichage de la liste des modules
+    #[Route("/modules", name: 'Modules')]
     public function modules(EntityManagerInterface $entityManager): Response
     {
         $modules = $entityManager->getRepository(Modules::class)->findAll();
@@ -31,6 +33,7 @@ class ModulesController extends AbstractController
         ]);
     }
 
+    // methode responsable de l'affichage de la page du detail du module (information, graphique)
     #[Route("/modules/detail/{id}", name: 'Detail')]
     public function show_detail(EntityManagerInterface $entityManager, $id): Response
     {
@@ -45,7 +48,7 @@ class ModulesController extends AbstractController
         }
     }
 
-
+    // methode responsable de l'affichage de la page du formulaire pour enregistrer un nouveau module
     #[Route('/ajouterModule', name: 'AjouterModule')]
     public function ajouter_module(EntityManagerInterface $entityManager): Response
     {
@@ -56,10 +59,10 @@ class ModulesController extends AbstractController
         ]);
     }
 
+    // methode responsable de l'enregistrement d'un nouveau module dans la base de données
     #[Route('/enregistrerModule', name: 'EnregistrerModule')]
     public function enregistrer_module(Request $request, EntityManagerInterface $entityManager): Response
     {
-        dump($request->request);
         $request = $request->request;
         if ($request->count() > 0) {
             $typeModule = $entityManager->getRepository(TypeModule::class)->find($request->get('type_module'));
@@ -81,6 +84,7 @@ class ModulesController extends AbstractController
         return $this->redirectToRoute('Modules');
     }
 
+    // methode responsable de l'affichage de la page du formulaire pour enregistrer un nouveau type module
     #[Route('/ajouterTypeModule', name: 'AjouterTypeModule')]
     public function ajouter_type_module(EntityManagerInterface $entityManager): Response
     {
@@ -89,6 +93,7 @@ class ModulesController extends AbstractController
         ]);
     }
 
+    // methode responsable de l'enregistrement d'un nouveau type de module dans la base de données
     #[Route('/enregistrerTypeModule', name: 'EnregistrerTypeModule')]
     public function enregistrer_type_module(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -116,17 +121,19 @@ class ModulesController extends AbstractController
         return $this->redirectToRoute('AjouterModule');
     }
 
-    #[Route('/notifications', name: 'Notifications')]
-    public function notifications(EntityManagerInterface $entityManager): Response
+    // methode responsable de l'affichage des alerts (dysfonctionnement d'un module)
+    #[Route('/alerts', name: 'Alerts')]
+    public function alerts(EntityManagerInterface $entityManager): Response
     {
         $modules = $entityManager->getRepository(Modules::class)->findAll();
 
-        return $this->render('Modules/notifications.html.twig', [
+        return $this->render('Modules/alerts.html.twig', [
             'modules' => $modules,
             'nb_alerts' => $this->getNbAlerts($entityManager)
         ]);
     }
 
+    // methode privé qui sert au autres methodes pour calculer le nombre d'alerts en cours (ce nombre peut changer dynamiquement si nombre d'alertes change grace a une fonction js)
     private function getNbAlerts($entityManager)
     {
         $modules = $entityManager->getRepository(Modules::class)->findAll();
