@@ -52,26 +52,17 @@
 					<td>
 						<center>{{module.typeModule.nom}}</center>
 					</td>
-
-					{% if module.etat == "Fonctionnel" %}
-						<td>
-							<center>
+					<td>
+						<center id="etat">
+							{% if module.etat == "Fonctionnel" %}
 								<i style='text-decoration:none; color:green; font-size:20px' class='fas fa-smile'></i>
-							</center>
-						</td>
-					{% elseif module.etat == "En maintenance" %}
-						<td>
-							<center>
+							{% elseif module.etat == "En maintenance" %}
 								<i style='text-decoration:none; color:orange; font-size:20px' class='fas fa-meh'></i>
-							</center>
-						</td>
-					{% else %}
-						<td>
-							<center>
+							{% else %}
 								<i style='text-decoration:none; color:red; font-size:20px' class='fas fa-meh'></i>
-							</center>
-						</td>
-					{% endif %}
+							{% endif %}
+						</center>
+					</td>
 
 					{% if nb_donnees > 0 and module.etat == "Fonctionnel" %}
                         {% set date = module.donnees[nb_donnees -1]|keys %}
@@ -116,6 +107,7 @@
                 <canvas id="myAreaChart">
                     <script>
 						let nb_donnees = 0	// utiliser pour faire un update du graph en cas d'un recu d'une nouvelle donnée
+
                         function update_graph() {
                             let x = []
                             let y = []
@@ -140,10 +132,20 @@
                                         y.push(data[time]);
                                     }
 
+									let etat_elmt = document.getElementById("etat")
+									
+									if (response.etat == "Fonctionnel") {
+										etat_elmt.innerHTML = "<i style='text-decoration:none; color:green; font-size:20px' class='fas fa-smile'></i>"
+									} else if (response.etat == "En maintenance") {
+										etat_elmt.innerHTML = "<i style='text-decoration:none; color:orange; font-size:20px' class='fas fa-meh'></i>"
+									} else {
+										etat_elmt.innerHTML = "<i style='text-decoration:none; color:red; font-size:20px' class='fas fa-meh'></i>"
+									}
+
 									if (nb_donnees != donnees.length) {	// verifier si une nouvelle donnée a été recu
 										nb_donnees = donnees.length
 										let nb_donnees_elmt = document.getElementById("nb_donnees")
-										nb_donnees_elmt.innerHTML = "<center>{{nb_donnees}}</center>" 	// mettre a jour le champ de "Nombre de données" dans le tableau
+										nb_donnees_elmt.innerHTML = "<center>"+nb_donnees+"</center>" 	// mettre a jour le champ de "Nombre de données" dans le tableau en réel temps 
 
 										// Créez le graphique une fois que les données ont été récupérées avec succès
 										let ctx = document.getElementById("myAreaChart");

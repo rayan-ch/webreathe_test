@@ -17,7 +17,7 @@ class APIController extends AbstractController
     public function index(EntityManagerInterface $entityManager, $id): JsonResponse
     {
         $module = $entityManager->getRepository(Modules::class)->find($id);   
-        $data = ['historique' => $module->getDonnees(), 'description' => $module->getDescription()];
+        $data = ['historique' => $module->getDonnees(), 'description' => $module->getDescription(), 'etat' => $module->getEtat()];
 
         return $this->json($data);
     }
